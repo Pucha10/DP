@@ -35,20 +35,20 @@ body{
     display:flex;
     justify-content: center;    
 }
-#card{
+.card{
     width: 25%;
     height: 100%;
     padding: 1rem 3rem;
 }
-#card img{
+.card img{
     width: 100%;
     
     display: block;
 }
-#card h2{
+.card h2{
     text-align: center;
 }
-#cardDescription{
+.cardDescription{
     text-align: justify;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
