@@ -12,6 +12,7 @@ body{
 }
 #topLabel{
     display: flex;
+    flex-wrap: wrap;
     background-color: var(--secondary-color);
     justify-content: center;
 }
