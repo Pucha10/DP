@@ -131,8 +131,6 @@ function MakeRandomMove() {
         j = Math.floor(Math.random() * 3);
         x = i * 3 + j;
     }
-
-    console.log(x);
     if (isXTurn && boardElement.children[x].className == "cell") {
         boardElement.children[x].classList.add("x");
         isXTurn = false;
