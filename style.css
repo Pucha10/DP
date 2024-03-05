@@ -4,7 +4,8 @@
     --third-color: #16F4D0;
     --fourth-color: #429EA6;
     --fifth-color: #153B50;
-
+    --cell-size:100px;
+    --mark-size:calc(var(--cell-size)*0.9);
   }
 body{
     background-color: var(--main-color);
@@ -51,4 +52,52 @@ body{
 .cardDescription{
     text-align: justify;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.board
+{
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    justify-items: center;
+    align-items: center;
+    grid-template-columns: repeat(3,auto);
+}
+.cell
+{
+    width: var(--cell-size);
+    height: var(--cell-size);
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.cell.x::before,
+.cell.x::after
+{
+    content: '';
+    position: absolute;
+    width: calc(var(--mark-size)*0.15);
+    height: var(--mark-size);
+    background-color: black;
+}
+.cell.x::before
+{
+    transform: rotate(45deg);
+}
+.cell.x::after
+{
+    transform: rotate(-45deg);
+}
+.cell.o::before,
+.cell.o::after
+{
+    content: '';
+    position: absolute;
+    width: var(--mark-size);
+    height: var(--mark-size);
+    border-radius: 50%;
+    background-color: black;
 }
