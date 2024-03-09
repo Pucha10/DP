@@ -13,9 +13,14 @@ function StartGame(mode) {
     GameMenu.remove();
     boardElement.style.display = "grid";
     gameMode = mode;
-    if (mode != "PvP") {
+    if (mode == "easy") {
         if (oRatio.checked) {
             MakeRandomMove();
+        }
+    }
+    if (mode == "hard") {
+        if (oRatio.checked) {
+            cleverBot();
         }
     }
 }
@@ -32,27 +37,33 @@ boardTemplate.forEach((row, rowIndex) => {
     });
 });
 function cellClicked(currentCell, i, j) {
-    if (isXTurn) {
+    let isLegalMove = false;
+    if (isXTurn && currentCell.className == "cell") {
         currentCell.classList.add("x");
         isXTurn = false;
         if (checkWin(i, j)) {
             EndGame("x");
             return;
         }
-    } else {
+        isLegalMove = true;
+    } else if (!isXTurn && currentCell.className == "cell") {
         currentCell.classList.add("o");
         isXTurn = true;
         if (checkWin(i, j)) {
             EndGame("O");
             return;
         }
+        isLegalMove = true;
     }
     if (checkTie()) {
         EndGame("Tie");
         return;
     }
-    if (gameMode == "easy") {
+    if (gameMode == "easy" && isLegalMove) {
         MakeRandomMove();
+    }
+    if (gameMode == "hard" && isLegalMove) {
+        cleverBot();
     }
 }
 function checkWin(i, j) {
@@ -149,4 +160,42 @@ function MakeRandomMove() {
     if (checkTie()) {
         EndGame("Tie");
     }
+}
+function cleverBot() {
+    let possibleMoves = [];
+    for (let i = 0; i < 9; i++) {
+        if (boardElement.children[i].className == "cell") {
+            possibleMoves.push(i);
+        }
+    }
+
+    // Sprawdzenie, czy cleverBot może wygrać w jednym ruchu
+    for (let move of possibleMoves) {
+        let row = Math.floor(move / 3);
+        let col = move % 3;
+        boardTemplate[row][col] = isXTurn ? "x" : "o";
+        if (checkWin(row, col)) {
+            boardElement.children[move].classList.add(isXTurn ? "x" : "o");
+            isXTurn = !isXTurn;
+            return; // Zakończ działanie funkcji, jeśli cleverBot wygrywa w jednym ruchu
+        }
+        boardTemplate[row][col] = ""; // Przywróć planszę do stanu początkowego
+    }
+
+    // Sprawdzenie, czy gracz może wygrać w jednym ruchu i zablokowanie go
+    let opponent = isXTurn ? "o" : "x";
+    for (let move of possibleMoves) {
+        let row = Math.floor(move / 3);
+        let col = move % 3;
+        boardTemplate[row][col] = opponent;
+        if (checkWin(row, col)) {
+            boardElement.children[move].classList.add(isXTurn ? "x" : "o");
+            isXTurn = !isXTurn;
+            return; // Zakończ działanie funkcji, jeśli cleverBot blokuje gracza
+        }
+        boardTemplate[row][col] = ""; // Przywróć planszę do stanu początkowego
+    }
+
+    // Jeśli nie ma możliwości zwycięstwa ani blokowania, wykonaj losowy ruch
+    MakeRandomMove();
 }
