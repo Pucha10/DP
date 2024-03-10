@@ -7,6 +7,7 @@ let GameMenu = document.getElementById("GameMenu");
 let boardElement = document.getElementById("board");
 let isXTurn = true;
 let gameMode;
+let bot;
 function StartGame(mode) {
     xRatio = document.getElementById("Xratio");
     oRatio = document.getElementById("Oratio");
@@ -20,7 +21,13 @@ function StartGame(mode) {
     }
     if (mode == "hard") {
         if (oRatio.checked) {
-            cleverBot();
+        bot = new Bot('x');
+        let i = bot.bestMove(convertBoard2String(boardElement));
+        makeMove(i, bot.sign);
+        
+        }
+        else{
+        bot = new Bot('o');
         }
     }
 }
@@ -63,7 +70,8 @@ function cellClicked(currentCell, i, j) {
         MakeRandomMove();
     }
     if (gameMode == "hard" && isLegalMove) {
-        cleverBot();
+        let i = bot.bestMove(convertBoard2String(boardElement));
+        makeMove(i, bot.sign);
     }
 }
 function checkWin(i, j) {
@@ -161,41 +169,59 @@ function MakeRandomMove() {
         EndGame("Tie");
     }
 }
-function cleverBot() {
-    let possibleMoves = [];
-    for (let i = 0; i < 9; i++) {
-        if (boardElement.children[i].className == "cell") {
-            possibleMoves.push(i);
+function checkIfWin(board) {
+        // Sprawdź wszystkie możliwe kombinacje, które mogą prowadzić do zwycięstwa
+        const winConditions = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], // poziome linie
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], // pionowe linie
+            [0, 4, 8], [2, 4, 6] // przekątne linie
+        ];
+    
+        for (let condition of winConditions) {
+            const [a, b, c] = condition;
+            if (board[a] !== "" && board[a] === board[b] && board[a] === board[c]) {
+                return true;
+            }
         }
+        return false;
+}
+function convertBoard2String(board)
+{
+    let cells=[];
+    for (i=0;i<9;i++)
+    {
+        cells.push(board.children[i]);
     }
-
-    // Sprawdzenie, czy cleverBot może wygrać w jednym ruchu
-    for (let move of possibleMoves) {
-        let row = Math.floor(move / 3);
-        let col = move % 3;
-        boardTemplate[row][col] = isXTurn ? "x" : "o";
-        if (checkWin(row, col)) {
-            boardElement.children[move].classList.add(isXTurn ? "x" : "o");
-            isXTurn = !isXTurn;
-            return; // Zakończ działanie funkcji, jeśli cleverBot wygrywa w jednym ruchu
+    return cells.map(cell => {
+        if (cell.classList.contains("x")) {
+            return "X";
+        } else if (cell.classList.contains("o")) {
+            return "O";
+        } else {
+            return "";
         }
-        boardTemplate[row][col] = ""; // Przywróć planszę do stanu początkowego
+    });
+}
+function makeMove(i,sign)
+{
+    boardElement.children[i].classList.add(sign);
+    if(sign=='x')
+    {
+        isXTurn=false;
     }
-
-    // Sprawdzenie, czy gracz może wygrać w jednym ruchu i zablokowanie go
-    let opponent = isXTurn ? "o" : "x";
-    for (let move of possibleMoves) {
-        let row = Math.floor(move / 3);
-        let col = move % 3;
-        boardTemplate[row][col] = opponent;
-        if (checkWin(row, col)) {
-            boardElement.children[move].classList.add(isXTurn ? "x" : "o");
-            isXTurn = !isXTurn;
-            return; // Zakończ działanie funkcji, jeśli cleverBot blokuje gracza
-        }
-        boardTemplate[row][col] = ""; // Przywróć planszę do stanu początkowego
+    else{
+        isXTurn=true;
     }
+    if(checkTie())
+    {
+        EndGame("Tie");
+    }
+    console.log(Math.floor(i/3))
+    console.log(i%3)
+    if(checkWin(Math.floor(i/3),i%3))
+    {
+        EndGame(sign);
+    }
+    
 
-    // Jeśli nie ma możliwości zwycięstwa ani blokowania, wykonaj losowy ruch
-    MakeRandomMove();
 }
