@@ -42,7 +42,7 @@ minimax(board, depth, isMaximizingPlayer, computerSign) {
     const result = this.evaluate(board);
 
     if (result !== 0) {
-        return scores[result];
+        return result;
     }
 
     if (this.isBoardFull(board)) {
@@ -71,16 +71,16 @@ minimax(board, depth, isMaximizingPlayer, computerSign) {
         return bestScore;
     }
 }
-
-
 bestMove(board) {
+    let isX = this.sign=='x' ? false:true;
+
     let bestMove = -1;
     let bestScore = -Infinity;
     for (let i = 0; i < 9; i++) {
         if (board[i] === "") {
-            board[i] = 'X';
-            let score = this.minimax(board, 0, false);
-            console.log(score); //tu jest Nan czemu?
+            board[i] = this.sign; 
+            let score = this.minimax(board, 0, isX, this.playerSign); 
+            console.log(score);
             board[i] = "";
             if (score > bestScore) {
                 bestScore = score;

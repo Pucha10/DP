@@ -170,11 +170,10 @@ function MakeRandomMove() {
     }
 }
 function checkIfWin(board) {
-        // Sprawdź wszystkie możliwe kombinacje, które mogą prowadzić do zwycięstwa
         const winConditions = [
-            [0, 1, 2], [3, 4, 5], [6, 7, 8], // poziome linie
-            [0, 3, 6], [1, 4, 7], [2, 5, 8], // pionowe linie
-            [0, 4, 8], [2, 4, 6] // przekątne linie
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], 
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], 
+            [0, 4, 8], [2, 4, 6] 
         ];
     
         for (let condition of winConditions) {
@@ -204,6 +203,7 @@ function convertBoard2String(board)
 }
 function makeMove(i,sign)
 {
+    console.log(i);
     boardElement.children[i].classList.add(sign);
     if(sign=='x')
     {
@@ -216,8 +216,7 @@ function makeMove(i,sign)
     {
         EndGame("Tie");
     }
-    console.log(Math.floor(i/3))
-    console.log(i%3)
+    
     if(checkWin(Math.floor(i/3),i%3))
     {
         EndGame(sign);
