@@ -17,17 +17,23 @@
             <a href="#"> Fifth Page</a>
             <a href="#"> Sixth Page</a>
         </div>
-        <br><br><br>
+        <br /><br /><br />
         <div class="GameMenu" id="GameMenu">
-        <h2>Select Game Mode</h2>
-        <input type="radio" id="Xratio" name="gameRatio" value="ratio1" checked>
-        <label for="Xratio">X</label>
-        <input type="radio" id="Oratio" name="gameRatio" value="ratio2">
-        <label for="Oratio">O</label>
-        <br>
-        <Button onclick="StartGame('PvP')"> PvP</Button>
-        <button onclick="StartGame('easy')">Easy Mode</button>
-        <button onclick="StartGame('hard')">Hard Mode</button>
+            <h2>Select Game Mode</h2>
+            <input
+                type="radio"
+                id="Xratio"
+                name="gameRatio"
+                value="ratio1"
+                checked
+            />
+            <label for="Xratio">X</label>
+            <input type="radio" id="Oratio" name="gameRatio" value="ratio2" />
+            <label for="Oratio">O</label>
+            <br />
+            <button onclick="StartGame('PvP')">PvP</button>
+            <button onclick="StartGame('easy')">Easy Mode</button>
+            <button onclick="StartGame('hard')">Hard Mode</button>
         </div>
         <div class="board" id="board" hidden>
             <div class="cell"></div>
@@ -41,7 +47,5 @@
             <div class="cell"></div>
         </div>
         <script src="script.js"></script>
-    </body>
-    </html>
     </body>
 </html>
