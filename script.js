@@ -9,26 +9,16 @@ let isXTurn = true;
 let gameMode;
 let bot;
 function StartGame(mode) {
-    xRatio = document.getElementById("Xratio");
-    oRatio = document.getElementById("Oratio");
     GameMenu.remove();
     boardElement.style.display = "grid";
     gameMode = mode;
     if (mode == "easy") {
-        if (oRatio.checked) {
             MakeRandomMove();
-        }
     }
-    if (mode == "hard") {
-        if (oRatio.checked) {
-        bot = new Bot('x');
+    else if (mode == "hard") {
+        bot = new Bot();
         let i = bot.bestMove(convertBoard2String(boardElement));
-        makeMove(i, bot.sign);
-        
-        }
-        else{
-        bot = new Bot('o');
-        }
+        makeMove(i);
     }
 }
 boardTemplate.forEach((row, rowIndex) => {
@@ -71,7 +61,7 @@ function cellClicked(currentCell, i, j) {
     }
     if (gameMode == "hard" && isLegalMove) {
         let i = bot.bestMove(convertBoard2String(boardElement));
-        makeMove(i, bot.sign);
+        makeMove(i);
     }
 }
 function checkWin(i, j) {
@@ -201,9 +191,8 @@ function convertBoard2String(board)
         }
     });
 }
-function makeMove(i,sign)
+function makeMove(i,sign='x')
 {
-    console.log(i);
     boardElement.children[i].classList.add(sign);
     if(sign=='x')
     {

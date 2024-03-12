@@ -1,45 +1,27 @@
 class Bot {
-    constructor(sign) {
-        this.sign = sign;
-        if (sign == "x") {
-            this.playerSign = "O";
-        } else {
-            this.playerSign = "X";
-        }
-    }
     checkWin(board, player) {
         const winConditions = [
-            [0, 1, 2],
-            [3, 4, 5],
-            [6, 7, 8],
-            [0, 3, 6],
-            [1, 4, 7],
-            [2, 5, 8],
-            [0, 4, 8],
-            [2, 4, 6],
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], 
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], 
+            [0, 4, 8], [2, 4, 6] 
         ];
 
-        return winConditions.some((condition) =>
-            condition.every((index) => board[index] === player)
+        return winConditions.some(condition => 
+            condition.every(index => board[index] === player)
         );
     }
+
     isBoardFull(board) {
-        return board.every((cell) => cell !== "");
+        return board.every(cell => cell !== "");
     }
 
     evaluate(board) {
-        if (this.checkWin(board, "X")) return 10;
-        if (this.checkWin(board, "O")) return -10;
+        if (this.checkWin(board, 'X')) return 10;
+        if (this.checkWin(board, 'O')) return -10;
         return 0;
     }
 
-    minimax(board, depth, isMaximizingPlayer, computerSign) {
-        const scores = {
-            [computerSign]: 10,
-            [this.playerSign]: -10,
-            Tie: 0,
-        };
-
+    minimax(board, depth, isMaximizing) {
         const result = this.evaluate(board);
 
         if (result !== 0) {
@@ -47,18 +29,15 @@ class Bot {
         }
 
         if (this.isBoardFull(board)) {
-            return scores["Tie"];
+            return 0;
         }
 
-        if (isMaximizingPlayer) {
+        if (isMaximizing) {
             let bestScore = -Infinity;
             for (let i = 0; i < 9; i++) {
                 if (board[i] === "") {
-                    board[i] = computerSign;
-                    bestScore = Math.max(
-                        bestScore,
-                        this.minimax(board, depth + 1, false, this.sign)
-                    );
+                    board[i] = 'X'; 
+                    bestScore = Math.max(bestScore, this.minimax(board, depth + 1, false));
                     board[i] = "";
                 }
             }
@@ -67,35 +46,24 @@ class Bot {
             let bestScore = Infinity;
             for (let i = 0; i < 9; i++) {
                 if (board[i] === "") {
-                    board[i] = this.playerSign;
-                    bestScore = Math.min(
-                        bestScore,
-                        this.minimax(board, depth + 1, true, this.sign)
-                    );
+                    board[i] = 'O'; 
+                    bestScore = Math.min(bestScore, this.minimax(board, depth + 1, true));
                     board[i] = "";
                 }
             }
             return bestScore;
         }
     }
+
     bestMove(board) {
-        let isMaximizingPlayer = this.sign === "x";
         let bestMove = -1;
-        let bestScore = isMaximizingPlayer ? -Infinity : Infinity;
+        let bestScore = -Infinity;
         for (let i = 0; i < 9; i++) {
             if (board[i] === "") {
-                board[i] = this.sign;
-                let score = this.minimax(
-                    board,
-                    0,
-                    !isMaximizingPlayer,
-                    this.playerSign
-                );
+                board[i] = 'X'; 
+                let score = this.minimax(board, 0, false);
                 board[i] = "";
-                if (
-                    (isMaximizingPlayer && score > bestScore) ||
-                    (!isMaximizingPlayer && score < bestScore)
-                ) {
+                if (score > bestScore) {
                     bestScore = score;
                     bestMove = i;
                 }
