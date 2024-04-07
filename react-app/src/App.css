@@ -1,0 +1,73 @@
+:root {
+    --main-color: #ECEBE4;
+    --secondary-color: #CC998D;
+    --third-color: #16F4D0;
+    --fourth-color: #429EA6;
+    --fifth-color: #153B50;
+    --cell-size:100px;
+    --mark-size:calc(var(--cell-size)*0.9);
+  }
+  body {
+    background: linear-gradient(45deg, #ECEBE4,#CC998D);
+  }
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 60px); 
+}
+.left-column {
+  flex: 7;
+}
+.right-column {
+  flex: 3;
+  padding: 25px;
+}
+.social-media {
+  margin-top: 20px;
+}
+.social-media a {
+  margin-right: 10px;
+}
+.social-media img {
+  width: 80px;
+  height: 80px;
+}
+body h1 {
+  font-size: 80px;
+  margin-bottom: 25px;
+}
+.name {
+  color: #e61919; 
+}
+img {
+  width: 380px;
+  height: auto;
+  border-radius: 50%; /* Zaokrąglamy rogi zdjęcia */
+}
+@media screen and (max-width: 600px) {
+  .container {
+    flex-direction: column; /* Układ kolumnowy na urządzeniach o mniejszej szerokości */
+  }
+  
+  .left-column, .right-column {
+    width: 100%; /* Szerokość kolumn na pełną szerokość ekranu */
+    padding: 15px; /* Zmniejszenie odstępów */
+    text-align: center; /* Wyśrodkowanie zawartości */
+  }
+
+  .social-media a {
+    display: block; /* Umieszczenie ikon social media pod sobą */
+    margin: 10px auto; /* Centrowanie ikon */
+  }
+
+  h1 {
+    font-size: 36px; /* Zmniejszenie rozmiaru nagłówka */
+    margin-bottom: 20px; /* Zmniejszenie odstępu między nagłówkami */
+  }
+  
+  img {
+    max-width: 100%; /* Maksymalna szerokość obrazka */
+    height: auto; /* Automatyczne skalowanie wysokości */
+  }
+}
